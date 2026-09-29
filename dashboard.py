@@ -22,16 +22,20 @@ INFLUX_URL = os.getenv("INFLUXDB_URL", "http://localhost:8086")
 INFLUX_TOKEN = os.getenv("INFLUXDB_TOKEN", "my-super-secret-auth-token")
 INFLUX_ORG = os.getenv("INFLUXDB_ORG", "ptit_iot")
 INFLUX_BUCKET_RAW = os.getenv("INFLUXDB_BUCKET_RAW", "sensor_raw")
+INFLUX_BUCKET_PROCESSED = os.getenv("INFLUXDB_BUCKET_PROCESSED", "sensor_processed")
 
 @st.cache_resource
 def get_influx_client():
     return InfluxDBClient(url=INFLUX_URL, token=INFLUX_TOKEN, org=INFLUX_ORG)
 
-def load_data(measurement_name):
+def load_data(measurement_name, target_bucket=None):
+    if target_bucket is None:
+        target_bucket = INFLUX_BUCKET_RAW
+        
     client = get_influx_client()
     query_api = client.query_api()
     query = f'''
-    from(bucket: "{INFLUX_BUCKET_RAW}")
+    from(bucket: "{target_bucket}")
       |> range(start: -1h)
       |> filter(fn: (r) => r["_measurement"] == "{measurement_name}")
       |> pivot(rowKey: ["_time"], columnKey: ["_field"], valueColumn: "_value")
@@ -65,7 +69,7 @@ st.sidebar.info("Hệ thống: Mosquitto MQTT + InfluxDB 2.x + Streamlit Dashboa
 if view_mode == "1. Real-time Monitoring":
     st.header("⚡ Dữ liệu Cảm biến Thời gian thực (Raw Data)")
     
-    df_raw = load_data("environment_raw")
+    df_raw = load_data("environment_raw", target_bucket=INFLUX_BUCKET_RAW)
     
     if df_raw.empty:
         st.warning("⚠️ Chưa có dữ liệu thô. Hãy đảm bảo `collector.py` và `simulator.py` đang chạy.")
@@ -96,7 +100,7 @@ if view_mode == "1. Real-time Monitoring":
 elif view_mode == "2. Processed Data Analysis":
     st.header("🧹 Dữ liệu sau Tiền xử lý (Processed Data)")
     
-    df_proc = load_data("environment_processed")
+    df_proc = load_data("environment_processed", target_bucket=INFLUX_BUCKET_PROCESSED)
     
     if df_proc.empty:
         st.warning("⚠️ Chưa có dữ liệu đã tiền xử lý. Hãy chạy `processor.py` để tạo dữ liệu sạch.")
