@@ -48,8 +48,6 @@ iot_bth2/
 ├── collector.py          # Thu thập dữ liệu, validate, tính latency & ghi DB (MQTT Subscriber)
 ├── processor.py          # Tiền xử lý dữ liệu (Clean, IQR, Resample, Scaler)
 ├── dashboard.py          # Streamlit Dashboard giám sát Realtime & Processed Data
-├── report/
-│   └── Bao_cao_BTH2_IoT.docx  # Báo cáo Word chuẩn 4-6 trang
 └── docs/
     ├── DEMO.md           # Kịch bản demo từng phút (5-10 phút)
     ├── QA.md             # Bộ 20 câu hỏi & đáp bảo vệ đồ án
@@ -135,6 +133,6 @@ INFLUXDB_BUCKET_PROCESSED=sensor_processed
 | **Độ trễ nhỏ nhất (Min Latency)** | **0.000 ms** |
 | **Độ trễ lớn nhất (Max Latency)** | **1.456 ms** |
 | **Số bản ghi bị thiếu độ ẩm (Missing Value)** | **4 bản ghi** |
-| **Số điểm bất thường nhiệt độ (IQR Outliers)** | **3 bản ghi** |
+| **Số bản ghi nhiễu bất thường (Temperature IQR Outliers)** | **3 bản ghi** |
 | **Cửa sổ Resampling (Resampling Window)** | **10 giây** |
 | **Số bản ghi sau tiền xử lý (Processed Records)** | **68 bản ghi** |
