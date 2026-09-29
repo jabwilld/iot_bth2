@@ -47,11 +47,7 @@ iot_bth2/
 ├── simulator.py          # Mô phỏng thiết bị cảm biến IoT (MQTT Publisher)
 ├── collector.py          # Thu thập dữ liệu, validate, tính latency & ghi DB (MQTT Subscriber)
 ├── processor.py          # Tiền xử lý dữ liệu (Clean, IQR, Resample, Scaler)
-├── dashboard.py          # Streamlit Dashboard giám sát Realtime & Processed Data
-└── docs/
-    ├── DEMO.md           # Kịch bản demo từng phút (5-10 phút)
-    ├── QA.md             # Bộ 20 câu hỏi & đáp bảo vệ đồ án
-    └── SUBMISSION_CHECKLIST.md # Checklist nộp bài đầy đủ
+└── dashboard.py          # Streamlit Dashboard giám sát Realtime & Processed Data
 ```
 
 ---
